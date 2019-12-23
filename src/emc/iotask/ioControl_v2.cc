@@ -491,24 +491,24 @@ void hal_init_pins(void)
     }
 }
 
-void load_tool(int pocket) {
+void load_tool(int index) {
     if(random_toolchanger) {
-	// swap the tools between the desired pocket and the spindle pocket
+	// swap the tools between the desired index and the spindle index
 	CANON_TOOL_TABLE temp;
 	char *comment_temp;
 
 	temp = emcioStatus.tool.toolTable[0];
-	emcioStatus.tool.toolTable[0] = emcioStatus.tool.toolTable[pocket];
-	emcioStatus.tool.toolTable[pocket] = temp;
+	emcioStatus.tool.toolTable[0] = emcioStatus.tool.toolTable[index];
+	emcioStatus.tool.toolTable[index] = temp;
 
 	comment_temp = ttcomments[0];
-	ttcomments[0] = ttcomments[pocket];
-	ttcomments[pocket] = comment_temp;
+	ttcomments[0] = ttcomments[index];
+	ttcomments[index] = comment_temp;
 
 	if (0 != saveToolTable(tool_table_file, emcioStatus.tool.toolTable, ttcomments, random_toolchanger))
 	    emcioStatus.status = RCS_ERROR;
-    } else if (pocket == 0) {
-	// magic T0 = pocket 0 = no tool
+    } else if (index == 0) {
+	// magic T0 = index 0 = no tool
 	emcioStatus.tool.toolTable[0].toolno = -1;
 	ZERO_EMC_POSE(emcioStatus.tool.toolTable[0].offset);
 	emcioStatus.tool.toolTable[0].diameter = 0.0;
@@ -517,7 +517,7 @@ void load_tool(int pocket) {
 	emcioStatus.tool.toolTable[0].orientation = 0;
     } else {
 	// just copy the desired tool to the spindle
-	emcioStatus.tool.toolTable[0] = emcioStatus.tool.toolTable[pocket];
+	emcioStatus.tool.toolTable[0] = emcioStatus.tool.toolTable[index];
     }
 }
 
@@ -954,25 +954,29 @@ int main(int argc, char *argv[])
 
 	case EMC_TOOL_PREPARE_TYPE:
 	{
-	    int p = ((EMC_TOOL_PREPARE*)emcioCommand)->pocket;
+        int tooltableindex = 0;
 	    int t = ((EMC_TOOL_PREPARE*)emcioCommand)->tool;
-	    rtapi_print_msg(RTAPI_MSG_DBG, "EMC_TOOL_PREPARE tool=%d pocket=%d\n", t, p);
+        for(int i = 0;i < CANON_POCKETS_MAX;i++){
+            if(emcioStatus.tool.toolTable[i].toolno == t)
+            tooltableindex = i;
+		}
+        rtapi_print_msg(RTAPI_MSG_DBG, "EMC_TOOL_PREPARE tool=%d tooltable index=%d\n", t, tooltableindex);
 
 	    // it doesn't make sense to prep the spindle pocket
-	    if (random_toolchanger && p == 0)
+        if (random_toolchanger && tooltableindex == 0)
 		break;
 
 	    /* set tool number first */
-            iocontrol_data->tool_prep_index = p;
-            *(iocontrol_data->tool_prep_pocket) = random_toolchanger? p: emcioStatus.tool.toolTable[p].pocketno;
-	    if (!random_toolchanger && p == 0) {
+            iocontrol_data->tool_prep_index = tooltableindex;
+            *(iocontrol_data->tool_prep_pocket) = random_toolchanger? tooltableindex: emcioStatus.tool.toolTable[tooltableindex].pocketno;
+        if (!random_toolchanger && tooltableindex == 0) {
 			*(iocontrol_data->tool_prep_number) = 0;
 			*(iocontrol_data->tool_prep_pocket) = 0;
 	    } else {
-		*(iocontrol_data->tool_prep_number) = emcioStatus.tool.toolTable[p].toolno;
-		if (emcioStatus.tool.toolTable[p].toolno != t) // sanity check
+        *(iocontrol_data->tool_prep_number) = emcioStatus.tool.toolTable[tooltableindex].toolno;
+        if (emcioStatus.tool.toolTable[tooltableindex].toolno != t) // sanity check
 		    rtapi_print_msg(RTAPI_MSG_DBG, "EMC_TOOL_PREPARE: mismatch: tooltable[%d]=%d, got %d\n", 
-				    p, emcioStatus.tool.toolTable[p].toolno, t);
+                    tooltableindex, emcioStatus.tool.toolTable[tooltableindex].toolno, t);
 	    }
 
 	    if ((proto > V1) && *(iocontrol_data->toolchanger_faulted)) { // informational

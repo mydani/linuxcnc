@@ -629,6 +629,7 @@ static PyObject *Stat_spindle(pyStatChannel *s) {
 
 static PyStructSequence_Field tool_fields[] = {
     {(char*)"id", },
+    {(char*)"pocket", },
     {(char*)"xoffset", },
     {(char*)"yoffset", },
     {(char*)"zoffset", },
@@ -649,7 +650,7 @@ static PyStructSequence_Desc tool_result_desc = {
     (char*)"tool_result", /* name */
     (char*)"", /* doc */
     tool_fields,
-    14
+    15
 };
 
 static PyTypeObject ToolResultType;
@@ -661,19 +662,20 @@ static PyObject *Stat_tool_table(pyStatChannel *s) {
         struct CANON_TOOL_TABLE &t = s->status.io.tool.toolTable[i];
         PyObject *tool = PyStructSequence_New(&ToolResultType);
         PyStructSequence_SET_ITEM(tool, 0, PyInt_FromLong(t.toolno));
-        PyStructSequence_SET_ITEM(tool, 1, PyFloat_FromDouble(t.offset.tran.x));
-        PyStructSequence_SET_ITEM(tool, 2, PyFloat_FromDouble(t.offset.tran.y));
-        PyStructSequence_SET_ITEM(tool, 3, PyFloat_FromDouble(t.offset.tran.z));
-        PyStructSequence_SET_ITEM(tool, 4, PyFloat_FromDouble(t.offset.a));
-        PyStructSequence_SET_ITEM(tool, 5, PyFloat_FromDouble(t.offset.b));
-        PyStructSequence_SET_ITEM(tool, 6, PyFloat_FromDouble(t.offset.c));
-        PyStructSequence_SET_ITEM(tool, 7, PyFloat_FromDouble(t.offset.u));
-        PyStructSequence_SET_ITEM(tool, 8, PyFloat_FromDouble(t.offset.v));
-        PyStructSequence_SET_ITEM(tool, 9, PyFloat_FromDouble(t.offset.w));
-        PyStructSequence_SET_ITEM(tool, 10, PyFloat_FromDouble(t.diameter));
-        PyStructSequence_SET_ITEM(tool, 11, PyFloat_FromDouble(t.frontangle));
-        PyStructSequence_SET_ITEM(tool, 12, PyFloat_FromDouble(t.backangle));
-        PyStructSequence_SET_ITEM(tool, 13, PyInt_FromLong(t.orientation));
+        PyStructSequence_SET_ITEM(tool, 1, PyInt_FromLong(t.pocketno));
+        PyStructSequence_SET_ITEM(tool, 2, PyFloat_FromDouble(t.offset.tran.x));
+        PyStructSequence_SET_ITEM(tool, 3, PyFloat_FromDouble(t.offset.tran.y));
+        PyStructSequence_SET_ITEM(tool, 4, PyFloat_FromDouble(t.offset.tran.z));
+        PyStructSequence_SET_ITEM(tool, 5, PyFloat_FromDouble(t.offset.a));
+        PyStructSequence_SET_ITEM(tool, 6, PyFloat_FromDouble(t.offset.b));
+        PyStructSequence_SET_ITEM(tool, 7, PyFloat_FromDouble(t.offset.c));
+        PyStructSequence_SET_ITEM(tool, 8, PyFloat_FromDouble(t.offset.u));
+        PyStructSequence_SET_ITEM(tool, 9, PyFloat_FromDouble(t.offset.v));
+        PyStructSequence_SET_ITEM(tool, 10, PyFloat_FromDouble(t.offset.w));
+        PyStructSequence_SET_ITEM(tool, 11, PyFloat_FromDouble(t.diameter));
+        PyStructSequence_SET_ITEM(tool, 12, PyFloat_FromDouble(t.frontangle));
+        PyStructSequence_SET_ITEM(tool, 13, PyFloat_FromDouble(t.backangle));
+        PyStructSequence_SET_ITEM(tool, 14, PyInt_FromLong(t.orientation));
         PyTuple_SetItem(res, j, tool);
         j++;
     }

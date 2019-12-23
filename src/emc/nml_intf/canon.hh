@@ -545,7 +545,7 @@ extern void USE_SPINDLE_FORCE();
 extern void USE_NO_SPINDLE_FORCE();
 
 /* Tool Functions */
-extern void SET_TOOL_TABLE_ENTRY(int pocket, int toolno, EmcPose offset, double diameter,
+extern void SET_TOOL_TABLE_ENTRY(int tool_index, int pocket, int toolno, EmcPose offset, double diameter,
                                  double frontangle, double backangle, int orientation);
 extern void USE_TOOL_LENGTH_OFFSET(EmcPose offset);
 
@@ -582,7 +582,7 @@ a change_tool command, the select_tool command must have been given
 before the change_tool command, and the value of slot must be the slot
 number of the selected tool. */
 
-extern void SELECT_POCKET(int pocket, int tool);	/* pocket is pocket number, tool is tool number */
+extern void SELECT_TOOL(int tool);
 
 extern void CHANGE_TOOL_NUMBER(int number);
 

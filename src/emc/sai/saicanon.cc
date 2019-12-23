@@ -500,16 +500,16 @@ void USE_NO_SPINDLE_FORCE()
 {PRINT("USE_NO_SPINDLE_FORCE()\n");}
 
 /* Tool Functions */
-void SET_TOOL_TABLE_ENTRY(int pocket, int toolno, EmcPose offset, double diameter,
+void SET_TOOL_TABLE_ENTRY(int tool_index, int pocket, int toolno, EmcPose offset, double diameter,
                           double frontangle, double backangle, int orientation) {
-    _sai._tools[pocket].toolno = toolno;
-    _sai._tools[pocket].offset = offset;
-    _sai._tools[pocket].diameter = diameter;
-    _sai._tools[pocket].frontangle = frontangle;
-    _sai._tools[pocket].backangle = backangle;
-    _sai._tools[pocket].orientation = orientation;
+    _sai._tools[tool_index].toolno = toolno;
+    _sai._tools[tool_index].offset = offset;
+    _sai._tools[tool_index].diameter = diameter;
+    _sai._tools[tool_index].frontangle = frontangle;
+    _sai._tools[tool_index].backangle = backangle;
+    _sai._tools[tool_index].orientation = orientation;
     ECHO_WITH_ARGS("%d, %d, %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f %.4f, %.4f, %.4f, %d",
-            pocket, toolno,
+            tool_index, toolno,
             offset.tran.x, offset.tran.y, offset.tran.z, offset.a, offset.b, offset.c, offset.u, offset.v, offset.w,
             frontangle, backangle, orientation);
 }
@@ -528,13 +528,13 @@ void CHANGE_TOOL(int slot)
   _sai._tools[0] = _sai._tools[slot];
 }
 
-void SELECT_POCKET(int slot, int tool)
-{PRINT("SELECT_POCKET(%d)\n", slot);}
+void SELECT_TOOL(int tool)
+{PRINT("SELECT_TOOL(%d)\n", tool);}
 
-void CHANGE_TOOL_NUMBER(int slot)
+void CHANGE_TOOL_NUMBER(int tool)
 {
-  PRINT("CHANGE_TOOL_NUMBER(%d)\n", slot);
-  _sai._active_slot = slot;
+  PRINT("CHANGE_TOOL_NUMBER(%d)\n", tool);
+  _sai._active_slot = tool;
 }
 
 

@@ -376,7 +376,7 @@ void COMMENT(const char *comment) {
     Py_XDECREF(result);
 }
 
-void SET_TOOL_TABLE_ENTRY(int pocket, int toolno, EmcPose offset, double diameter,
+void SET_TOOL_TABLE_ENTRY(int tool_index, int pocket, int toolno, EmcPose offset, double diameter,
                           double frontangle, double backangle, int orientation) {
 }
 
@@ -412,7 +412,7 @@ void PROGRAM_END() {}
 void FINISH() {}
 void ON_RESET() {}
 void PALLET_SHUTTLE() {}
-void SELECT_POCKET(int pocket, int tool) {}
+void SELECT_TOOL(int tool) {}
 void OPTIONAL_PROGRAM_STOP() {}
 void START_CHANGE() {}
 int  GET_EXTERNAL_TC_FAULT() {return 0;}
@@ -538,7 +538,7 @@ CANON_TOOL_TABLE GET_EXTERNAL_TOOL_TABLE(int pocket) {
     PyObject *result =
         callmethod(callback, "get_tool", "i", pocket);
     if(result == NULL ||
-       !PyArg_ParseTuple(result, "iddddddddddddi", &t.toolno, &t.offset.tran.x, &t.offset.tran.y, &t.offset.tran.z,
+       !PyArg_ParseTuple(result, "iiddddddddddddi", &t.toolno, &t.pocketno, &t.offset.tran.x, &t.offset.tran.y, &t.offset.tran.z,
                           &t.offset.a, &t.offset.b, &t.offset.c, &t.offset.u, &t.offset.v, &t.offset.w,
                           &t.diameter, &t.frontangle, &t.backangle, &t.orientation))
             interp_error ++;

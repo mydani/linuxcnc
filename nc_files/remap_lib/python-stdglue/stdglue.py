@@ -124,7 +124,7 @@ def prepare_epilog(self, **words):
             if self.return_value > 0:
                 self.selected_tool = int(self.params["tool"])
                 self.selected_pocket = int(self.params["pocket"])
-                emccanon.SELECT_POCKET(self.selected_pocket, self.selected_tool)
+                emccanon.SELECT_TOOL(self.selected_tool)
                 return INTERP_OK
             else:
                 self.set_errormsg("T%d: aborted (return code %.1f)" % (int(self.params["tool"]),self.return_value))
@@ -155,10 +155,13 @@ def change_prolog(self, **words):
         if self.cutter_comp_side:
             self.set_errormsg("Cannot change tools with cutter radius compensation on")
             return INTERP_ERROR
-        self.params["tool_in_spindle"] = self.current_tool
-        self.params["selected_tool"] = self.selected_tool
-        self.params["current_pocket"] = self.current_pocket # this is probably nonsense
+		self.params["tool_in_spindle"] = self.current_tool
+		self.params["selected_tool"] = self.selected_tool
+		self.params["current_pocket"] = self.current_pocket
         self.params["selected_pocket"] = self.selected_pocket
+		self.params["current_index"] = self.current_index
+        self.params["selected_index"] = self.selected_index
+		
         return INTERP_OK
     except Exception, e:
         self.set_errormsg("M6/change_prolog: %s" % (e))
@@ -185,8 +188,9 @@ def change_epilog(self, **words):
             if self.return_value > 0.0:
                 # commit change
                 self.selected_pocket =  int(self.params["selected_pocket"])
-                emccanon.CHANGE_TOOL(self.selected_pocket)
-                self.current_pocket = self.selected_pocket
+				self.current_pocket = self.selected_pocket
+                emccanon.CHANGE_TOOL(self.selected_index)
+				
                 self.selected_pocket = -1
                 self.selected_tool = -1
                 # cause a sync()

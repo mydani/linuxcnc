@@ -1314,6 +1314,7 @@ int Interp::load_tool_table()
   }
   for (; n < CANON_POCKETS_MAX; n++) {
     _setup.tool_table[n].toolno = -1;
+    _setup.tool_table[n].pocketno = -1;
     ZERO_EMC_POSE(_setup.tool_table[n].offset);
     _setup.tool_table[n].diameter = 0;
     _setup.tool_table[n].orientation = 0;
@@ -2013,7 +2014,7 @@ int Interp::synch()
   _setup.length_units = GET_EXTERNAL_LENGTH_UNIT_TYPE();
   _setup.mist = GET_EXTERNAL_MIST();
   _setup.plane = GET_EXTERNAL_PLANE();
-  _setup.selected_pocket = GET_EXTERNAL_SELECTED_TOOL_SLOT();
+  _setup.selected_index = GET_EXTERNAL_SELECTED_TOOL_SLOT();
   _setup.pockets_max = GET_EXTERNAL_POCKETS_MAX();
   _setup.traverse_rate = GET_EXTERNAL_TRAVERSE_RATE();
   _setup.feed_override = GET_EXTERNAL_FEED_OVERRIDE_ENABLE();

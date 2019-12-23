@@ -77,7 +77,9 @@ enum predefined_named_parameters {
     NP_FEED,
     NP_RPM,
     NP_CURRENT_TOOL,
+    NP_CURRENT_INDEX,
     NP_SELECTED_POCKET,
+    NP_SELECTED_INDEX,
     NP_CURRENT_POCKET,
     NP_X,
     NP_Y,
@@ -657,16 +659,24 @@ int Interp::lookup_named_param(const char *nameBuf,
 	break;
 
     case NP_SELECTED_POCKET:
-	*value = _setup.selected_pocket;
+    *value = _setup.selected_pocket;
 	break;
 
     case NP_CURRENT_POCKET:
-	*value = _setup.current_pocket;
-	break;
+    *value = _setup.current_pocket;
+    break;
 
     case NP_SELECTED_TOOL:
-	*value = _setup.selected_tool;
-	break;
+    *value = _setup.selected_tool;
+    break;
+
+    case NP_SELECTED_INDEX:
+    *value = _setup.selected_index;
+    break;
+
+    case NP_CURRENT_INDEX:
+    *value = _setup.current_index;
+    break;
 
     case NP_X:  // current position
 	*value = _setup.current_x;
@@ -862,8 +872,10 @@ int Interp::init_named_parameters()
   // tool related
   init_readonly_param("_current_tool", NP_CURRENT_TOOL, PA_USE_LOOKUP);
   init_readonly_param("_current_pocket", NP_CURRENT_POCKET, PA_USE_LOOKUP);
+  init_readonly_param("_current_tooltable_index", NP_CURRENT_INDEX, PA_USE_LOOKUP);
   init_readonly_param("_selected_pocket", NP_SELECTED_POCKET, PA_USE_LOOKUP);
   init_readonly_param("_selected_tool", NP_SELECTED_TOOL, PA_USE_LOOKUP);
+  init_readonly_param("_selected_tooltable_index", NP_SELECTED_INDEX, PA_USE_LOOKUP);
 
   // current position - alias to #5420-#5429
   init_readonly_param("_x", NP_X, PA_USE_LOOKUP);
