@@ -729,6 +729,8 @@ struct setup
   int random_toolchanger;       // tool changer swaps pockets, and pocket 0 is the spindle instead of "no tool"
   int selected_pocket;          // tool slot selected but not active
     int selected_tool;          // start switchover to pocket-agnostic interp
+    int selected_index;          // clear separation between a tool no, pocket in the changer, and an index in the tool table
+    int current_index;          // clear separation between a tool no, pocket in the changer, and an index in the tool table
   int sequence_number;          // sequence number of line last read
   int num_spindles;				// number of spindles available
   int active_spindle;			// the spindle currently used for CSS, FPR etc.

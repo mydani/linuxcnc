@@ -63,6 +63,7 @@ setup::setup() :
     blocktext{},
     control_mode(CANON_EXACT_STOP),
     current_pocket(0),
+    current_index(0),
 
     current_x (0.0),
     current_y (0.0),
@@ -122,6 +123,7 @@ setup::setup() :
     random_toolchanger(0),
     selected_pocket(0),
     selected_tool(0),
+    selected_index(0),
     sequence_number(0),
     speed {0.0},
     spindle_mode{CONSTANT_RPM},

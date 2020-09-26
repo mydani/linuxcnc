@@ -77,7 +77,9 @@ enum predefined_named_parameters {
     NP_FEED,
     NP_RPM,
     NP_CURRENT_TOOL,
+    NP_CURRENT_INDEX,
     NP_SELECTED_POCKET,
+    NP_SELECTED_INDEX,
     NP_CURRENT_POCKET,
     NP_X,
     NP_Y,
@@ -681,6 +683,12 @@ int Interp::lookup_named_param(const char *nameBuf,
 
     case NP_SELECTED_TOOL:
 	*value = _setup.selected_tool;
+    break;
+    case NP_SELECTED_INDEX:
+    *value = _setup.selected_index;
+    break;
+    case NP_CURRENT_INDEX:
+    *value = _setup.current_index;
 	break;
 
     case NP_X:  // current position

@@ -159,6 +159,8 @@ def change_prolog(self, **words):
         self.params["selected_tool"] = self.selected_tool
         self.params["current_pocket"] = self.current_pocket
         self.params["selected_pocket"] = self.selected_pocket
+		self.params["current_index"] = self.current_index
+        self.params["selected_index"] = self.selected_index
         return INTERP_OK
     except Exception, e:
         self.set_errormsg("M6/change_prolog: %s" % (e))
@@ -185,7 +187,7 @@ def change_epilog(self, **words):
             if self.return_value > 0.0:
                 # commit change
                 self.selected_pocket =  int(self.params["selected_pocket"])
-                emccanon.CHANGE_TOOL(self.selected_pocket)
+                emccanon.CHANGE_TOOL(self.selected_index)
                 self.current_pocket = self.selected_pocket
                 self.selected_pocket = -1
                 self.selected_tool = -1

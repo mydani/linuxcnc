@@ -137,18 +137,18 @@ class StatMixin:
         self.tools = list(s.tool_table)
         self.random = r
 
-    def change_tool(self, pocket):
+    def change_tool(self, index):
         if self.random:
-            self.tools[0], self.tools[pocket] = self.tools[pocket], self.tools[0]
-        elif pocket==0:
-            self.tools[0] = -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
+            self.tools[0], self.tools[index] = self.tools[index], self.tools[0]
+        elif index==0:
+            self.tools[0] = -1, -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
         else:
-            self.tools[0] = self.tools[pocket]
+            self.tools[0] = self.tools[index]
 
-    def get_tool(self, pocket):
-        if pocket >= 0 and pocket < len(self.tools):
-            return tuple(self.tools[pocket])
-        return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
+    def get_tool(self, index):
+        if index >= 0 and index < len(self.tools):
+            return tuple(self.tools[index])
+        return -1,-1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
 
     def get_external_angular_units(self):
         return self.s.angular_units or 1.0

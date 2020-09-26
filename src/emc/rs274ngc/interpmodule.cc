@@ -780,6 +780,18 @@ static inline int get_current_tool(Interp &interp)  {
 static inline void set_current_tool(Interp &interp, int value)  {
     interp._setup.tool_table[0].toolno = value;
 }
+static inline int get_current_index(Interp &interp)  {
+    return interp._setup.current_index;
+}
+static inline void set_current_index (Interp &interp, int value)  {
+    interp._setup.current_index = value;
+}
+static inline int get_selected_index(Interp &interp)  {
+    return interp._setup.selected_index;
+}
+static inline void set_selected_index(Interp &interp, int value)  {
+    interp._setup.selected_index = value;
+}
 
 BOOST_PYTHON_MODULE(interpreter) {
     using namespace boost::python;
